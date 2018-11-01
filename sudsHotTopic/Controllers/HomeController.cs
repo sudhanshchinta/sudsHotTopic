@@ -22,18 +22,16 @@ namespace sudsHotTopic.Controllers
         public ActionResult Mail(Message data)
         {
 
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress("donotreply@sudsweb.com");
+            message.To.Add(new MailAddress("sudhanshchintacompany@gmail.com"));
+            message.Subject = "Inquiry - Need Website";
+            message.Body = $"Name:{data.name}\n Email:{data.email}\n Phone:{data.phone}\n Message:{data.message}";
+
             SmtpClient client = new SmtpClient();
             client.Port = 25;
             client.Host = "relay-hosting.secureserver.net";
-            client.EnableSsl = true;
-            //client.Timeout = 10000;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-            client.Credentials = new System.Net.NetworkCredential("sudhanshchintacompany@gmail.com", "Qwerty1234!");
-
-            MailMessage mail = new MailMessage("donotreply@sudsweb.com", "sudhanshchintacompany@gmail.com", "Inquiry - Need Website",$"Name:{data.name}\n Email:{data.email}\n Phone:{data.phone}\n Message:{data.message}");
-
-            client.Send(mail);
+            client.Send(message);
 
             return null;
         }
